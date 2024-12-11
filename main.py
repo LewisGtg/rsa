@@ -1,5 +1,6 @@
 from sympy import mod_inverse, isprime
 import math
+import sys
 
 def factorize_n(n):
     # Procurar fatores de n
@@ -17,18 +18,22 @@ def find_private_key(e, n):
     if p is None or q is None:
         raise ValueError("Não foi possível fatorar n para obter p e q.")
 
-    # Calcular φ(n) = (p - 1) * (q - 1)
     phi_n = (p - 1) * (q - 1)
 
-    # Calcular d como o inverso modular de e mod φ(n)
     d = mod_inverse(e, phi_n)
     return d
 
-# Exemplo de uso
-e = 5  # valor comum de e
-n = 14   # um exemplo de n pequeno para fins de teste (com primos p=61, q=53)
+if (len(sys.argv) < 4):
+    print("Usage: python3 main.py <file_path> <e> <n>")
+    exit()
+
+e = int(sys.argv[2])
+n = int(sys.argv[3])
+
+print(f"Procurando chave privada para e = {e} e n = {n}")
+
 try:
     d = find_private_key(e, n)
-    print("Chave privada d encontrada:", d)
+    print(f"Chave privada encontrada PR = ({d}, {n})")
 except ValueError as ve:
     print(ve)
